@@ -13,7 +13,7 @@ public class BackGroundColor extends Strategy {
     public void applyStrategy(SXSSFWorkbook workbook, SXSSFCell cell) {
         CellStyle cellStyle = workbook.createCellStyle();
         cellStyle.cloneStyleFrom(cell.getCellStyle());
-        cellStyle.setFillBackgroundColor(getColor().getIndex());
+        cellStyle.setFillForegroundColor(getColor().getIndex());
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         cell.setCellStyle(cellStyle);
     }

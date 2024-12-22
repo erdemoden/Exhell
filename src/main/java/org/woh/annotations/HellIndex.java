@@ -9,5 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface HellIndex {
     int hellColumnOrder();
+
     int hellRowOrder() default 0;
 }
