@@ -11,7 +11,7 @@ public class CutService {
     private String name;
     @HellIndex(hellColumnOrder = 4,hellRowOrder = 2)
     private String surname;
-    @HellIndex(hellColumnOrder = 5,hellRowOrder = 3)
+    @HellIndex(hellColumnOrder = 5,hellRowOrder = 80)
     private String address;
 
     public String getCutId() {

@@ -1,5 +1,6 @@
 package org.woh.DTO.interfaces;
 
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.streaming.SXSSFCell;
@@ -13,6 +14,7 @@ public abstract class Strategy {
 
     public abstract void applyStrategy(SXSSFWorkbook workbook, SXSSFCell cell);
 
+    public abstract void applyCellStrategy(SXSSFWorkbook workbook,CellStyle cellStyle,Font font);
     public Map<Integer, Integer> getRowCellMap() {
         return rowCellMap;
     }

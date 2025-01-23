@@ -6,6 +6,7 @@ import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.woh.DTO.IndexObjectDTO;
+import org.woh.DTO.interfaces.CellStrategy;
 import org.woh.annotations.HellIndex;
 
 import java.io.File;
@@ -69,7 +70,10 @@ public class HellWriter {
     }
 
     private static void implementStrategies(HellOptions options, Integer hellCell, Integer hellRow, SXSSFWorkbook workbook, SXSSFCell cell) {
-      //  options.getStrategiesWithRow(hellRow).forEach(strategy -> strategy.applyStrategy(workbook, cell));
+        CellStrategy rowStrategy = options.getStrategyWithRow(hellCell);
+        if (rowStrategy != null) {
+            rowStrategy.applyStrategy(workbook, cell);
+        }
         options.getStrategiesWithRowAndCell(hellCell, hellRow).forEach(strategy -> strategy.applyStrategy(workbook, cell));
     }
 }

@@ -29,6 +29,22 @@ public class FontStrategy extends Strategy{
         cell.setCellStyle(cellStyle);
     }
 
+    @Override
+    public void applyCellStrategy(SXSSFWorkbook workbook,CellStyle cellStyle,Font font) {
+        if(font == null){
+            font = workbook.createFont();
+        }
+        if(getFontColor()!=null){
+            font.setColor(getFontColor().getIndex());
+        }
+        if(getBold()!=null){
+            font.setBold(getBold());
+        }
+        if(getItalic()!=null){
+            font.setItalic(getItalic());
+        }
+    }
+
     public Boolean getBold() {
         return bold;
     }

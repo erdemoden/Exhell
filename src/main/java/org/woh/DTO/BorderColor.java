@@ -2,6 +2,7 @@ package org.woh.DTO;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -23,6 +24,19 @@ public class BorderColor extends Strategy {
         cellStyle.setBottomBorderColor(getColor().getIndex());
         cell.setCellStyle(cellStyle);
     }
+
+    @Override
+    public void applyCellStrategy(SXSSFWorkbook workbook, CellStyle cellStyle, Font font) {
+        cellStyle.setBorderLeft(BorderStyle.THICK);
+        cellStyle.setLeftBorderColor(getColor().getIndex());
+        cellStyle.setBorderRight(BorderStyle.THICK);
+        cellStyle.setRightBorderColor(getColor().getIndex());
+        cellStyle.setBorderTop(BorderStyle.THICK);
+        cellStyle.setTopBorderColor(getColor().getIndex());
+        cellStyle.setBorderBottom(BorderStyle.THICK);
+        cellStyle.setBottomBorderColor(getColor().getIndex());
+    }
+
 
     public IndexedColors getColor() {
         return color;

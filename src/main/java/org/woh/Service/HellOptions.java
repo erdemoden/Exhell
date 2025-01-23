@@ -4,13 +4,14 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.woh.DTO.BackGroundColor;
 import org.woh.DTO.BorderColor;
 import org.woh.DTO.FontStrategy;
+import org.woh.DTO.Styles;
+import org.woh.DTO.interfaces.CellStrategy;
 import org.woh.DTO.interfaces.Strategy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class HellOptions {
 
@@ -24,6 +25,7 @@ public class HellOptions {
     private List<FontStrategy> fontStrategies;
     private Map<Integer, IndexedColors> backgroundColorByRow;
     private List<Strategy> strategies;
+    private Map<Integer, CellStrategy> cellStrategies;
 
     private HellOptions() {
         backgroundColorByRowAndCell = new ArrayList<>();
@@ -32,6 +34,7 @@ public class HellOptions {
         boldByRowAndCell = new ArrayList<>();
         italicByRowAndCell = new ArrayList<>();
         strategies = new ArrayList<>();
+        cellStrategies = new HashMap<>();
         boldByRow = new ArrayList<>();
         fontStrategies = new ArrayList<>();
     }
@@ -61,6 +64,23 @@ public class HellOptions {
             hellOptions.strategies.add(backGroundColor);
             return this;
         }
+        public Options withBackgroundColorByCell(Integer hellCell, IndexedColors color) {
+            CellStrategy rowStrategy = hellOptions.cellStrategies.get(hellCell);
+            BackGroundColor backGroundColor = new BackGroundColor();
+            backGroundColor.setColor(color);
+            if(rowStrategy == null){
+                rowStrategy = new CellStrategy();
+                Styles styles = new Styles();
+                styles.setBackgroundColor(color);
+                rowStrategy.setStyle(styles);
+                rowStrategy.getStrategies().add(backGroundColor);
+                hellOptions.cellStrategies.put(hellCell,rowStrategy);
+                return this;
+            }
+            rowStrategy.getStrategies().add(backGroundColor);
+            rowStrategy.getStyle().setBackgroundColor(color);
+            return this;
+        }
 
         public Options withFontColorByRowAndCell(Integer hellCell, Integer hellRow, IndexedColors color) {
             FontStrategy fontStrategy = hellOptions.fontStrategies.stream().filter(strategy -> strategy!=null &&  strategy.getRowCellMap().containsKey(hellRow) && strategy.getRowCellMap().containsValue(hellCell)).findFirst().orElse(null);
@@ -78,6 +98,27 @@ public class HellOptions {
             return this;
         }
         }
+        public Options withFontColorByCell(Integer hellCell, IndexedColors color) {
+            CellStrategy rowStrategy = hellOptions.cellStrategies.get(hellCell);
+            if(rowStrategy == null){
+                FontStrategy fontStrategy = new FontStrategy();
+                rowStrategy = new CellStrategy();
+                Styles styles = new Styles();
+                fontStrategy.setFontColor(color);
+                styles.setFontColor(color);
+                rowStrategy.setStyle(styles);
+                rowStrategy.getStrategies().add(fontStrategy);
+                hellOptions.cellStrategies.put(hellCell,rowStrategy);
+                return this;
+            }
+            rowStrategy.getStrategies().forEach(strategy -> {
+                if(strategy instanceof FontStrategy){
+                    ((FontStrategy) strategy).setFontColor(color);
+                }
+            });
+            rowStrategy.getStyle().setFontColor(color);
+            return this;
+        }
 
         public Options withBorderColorByRowAndCell(Integer hellCell, Integer hellRow, IndexedColors color) {
             BorderColor borderColor = new BorderColor();
@@ -86,6 +127,24 @@ public class HellOptions {
             borderColor.setRowCellMap(rowCellMap);
             borderColor.setColor(color);
             hellOptions.strategies.add(borderColor);
+            return this;
+        }
+
+        public Options withBorderColorByCell(Integer hellCell, IndexedColors color) {
+            CellStrategy rowStrategy = hellOptions.cellStrategies.get(hellCell);
+            BorderColor borderColor = new BorderColor();
+            borderColor.setColor(color);
+            if(rowStrategy == null){
+                rowStrategy = new CellStrategy();
+                Styles styles = new Styles();
+                styles.setBorderColor(color);
+                rowStrategy.setStyle(styles);
+                rowStrategy.getStrategies().add(borderColor);
+                hellOptions.cellStrategies.put(hellCell,rowStrategy);
+                return this;
+            }
+            rowStrategy.getStrategies().add(borderColor);
+            rowStrategy.getStyle().setBorderColor(color);
             return this;
         }
 
@@ -105,13 +164,25 @@ public class HellOptions {
             }
         }
 
-        public Options withBoldByRow(Integer hellRow) {
-            FontStrategy fontStrategy = new FontStrategy();
-            Map<Integer, Integer> rowCellMap = new HashMap<>();
-            rowCellMap.put(hellRow, null);
-            fontStrategy.setRowCellMap(rowCellMap);
-            fontStrategy.setBold(true);
-            hellOptions.strategies.add(fontStrategy);
+        public Options withBoldByCell(Integer hellRow) {
+            CellStrategy rowStrategy = hellOptions.cellStrategies.get(hellRow);
+            if(rowStrategy == null){
+                FontStrategy fontStrategy = new FontStrategy();
+                rowStrategy = new CellStrategy();
+                Styles styles = new Styles();
+                styles.setBold(true);
+                fontStrategy.setBold(true);
+                rowStrategy.setStyle(styles);
+                rowStrategy.getStrategies().add(fontStrategy);
+                hellOptions.cellStrategies.put(hellRow,rowStrategy);
+                return this;
+            }
+            rowStrategy.getStrategies().forEach(strategy -> {
+                if(strategy instanceof FontStrategy){
+                    ((FontStrategy) strategy).setBold(true);
+                }
+            });
+            rowStrategy.getStyle().setBold(true);
             return this;
         }
 
@@ -129,6 +200,27 @@ public class HellOptions {
                 hellOptions.fontStrategies.add(fontStrategy);
                 return this;
             }
+        }
+        public Options withItalicByCell(Integer hellCell) {
+            CellStrategy rowStrategy = hellOptions.cellStrategies.get(hellCell);
+            if(rowStrategy == null){
+                FontStrategy fontStrategy = new FontStrategy();
+                rowStrategy = new CellStrategy();
+                Styles styles = new Styles();
+                styles.setItalic(true);
+                rowStrategy.setStyle(styles);
+                fontStrategy.setItalic(true);
+                rowStrategy.getStrategies().add(fontStrategy);
+                hellOptions.cellStrategies.put(hellCell,rowStrategy);
+                return this;
+            }
+            rowStrategy.getStrategies().forEach(strategy -> {
+                if(strategy instanceof FontStrategy){
+                    ((FontStrategy) strategy).setItalic(true);
+                }
+            });
+            rowStrategy.getStyle().setItalic(true);
+            return this;
         }
 
         public <T> void writeToExHell(List<T> objects) throws IllegalAccessException {
@@ -170,6 +262,10 @@ public class HellOptions {
         return strategies;
     }
 
+    public Map<Integer, CellStrategy> getcellStrategies() {
+        return cellStrategies;
+    }
+
     public List<FontStrategy> getBoldByRow() {
         return boldByRow;
     }
@@ -179,9 +275,8 @@ public class HellOptions {
         strategies.removeIf(strategy -> !strategy.getRowCellMap().containsKey(hellRow) || !strategy.getRowCellMap().containsValue(hellCell));
         return strategies;
     }
-    public List<Strategy> getStrategiesWithRow(Integer hellRow) {
-        List<Strategy> strategies = this.getStrategies();
-        strategies.removeIf(strategy -> !strategy.getRowCellMap().containsKey(hellRow) && !strategy.getRowCellMap().containsValue(null));
-        return strategies;
+    public CellStrategy getStrategyWithRow(Integer hellRow) {
+        Map<Integer, CellStrategy> rowStrategyMap = this.getcellStrategies();
+        return rowStrategyMap.get(hellRow);
     }
 }

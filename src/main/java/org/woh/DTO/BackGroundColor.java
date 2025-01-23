@@ -2,6 +2,7 @@ package org.woh.DTO;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -16,6 +17,12 @@ public class BackGroundColor extends Strategy {
         cellStyle.setFillForegroundColor(getColor().getIndex());
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         cell.setCellStyle(cellStyle);
+    }
+
+    @Override
+    public void applyCellStrategy(SXSSFWorkbook workbook, CellStyle cellStyle, Font font) {
+        cellStyle.setFillForegroundColor(getColor().getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
     }
 
     public IndexedColors getColor() {
