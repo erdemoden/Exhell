@@ -31,7 +31,7 @@ public class HellWriter {
             }
             SXSSFCell cell = row.createCell(indexObjectDTO.getCell());
             implementStrategies(options, indexObjectDTO.getCell(), indexObjectDTO.getRow(), workbook, cell);
-            cell.setCellValue(indexObjectDTO.getObject().toString());
+            cell.setCellValue(indexObjectDTO.getObject()!=null ? indexObjectDTO.getObject().toString() : "null");
         });
         File file = new File((options.getFileName() != null ? options.getFileName() : "file") + ".xlsx");
         try {
@@ -70,9 +70,9 @@ public class HellWriter {
     }
 
     private static void implementStrategies(HellOptions options, Integer hellCell, Integer hellRow, SXSSFWorkbook workbook, SXSSFCell cell) {
-        CellStrategy rowStrategy = options.getStrategyWithRow(hellCell);
-        if (rowStrategy != null) {
-            rowStrategy.applyStrategy(workbook, cell);
+        CellStrategy cellStrategy = options.getStrategyWithCell(hellCell);
+        if (cellStrategy != null) {
+            cellStrategy.applyStrategy(workbook, cell);
         }
         options.getStrategiesWithRowAndCell(hellCell, hellRow).forEach(strategy -> strategy.applyStrategy(workbook, cell));
     }
