@@ -5,8 +5,128 @@
   <img src="ExHell.jpg" width="400" height="400">
 </p>
 
-The beauty of Strategy and Builder design patterns it is not finished next week will be finished
+The beauty of Strategy and Builder design patterns.
+Exhell is a library for dto to excel conversion with styles. It just uses apache poi library.It was inspired by the Poiji library
 
+Don't wory it was an hell but now it's Exhell.
+
+When you read this small doc you can listen to [that](https://www.youtube.com/watch?v=lFbnQQ6t98Q)
+
+
+# Getting Started
+
+In your Maven/Gradle project, first add the corresponding dependency:
+
+```xml
+<dependency>
+    <groupId>io.github.erdemoden</groupId>
+    <artifactId>Exhell</artifactId>
+    <version>1.0.1</version>
+</dependency>
+```
+# Documentation 
+
+  ## Annotations
+  the title is Annotations but actually there is only one annotation in this library for now. It's called HellIndex 
+
+  An example ussage of that annotation is like that 
+
+  ``` java
+public class CutService {
+    @HellIndex(hellColumnOrder = 1)
+    private String cutId;
+    @HellIndex(hellColumnOrder = 2)
+    private Integer cutAmount;
+    @HellIndex(hellColumnOrder = 3,hellRowOrder = 1)
+    private String name;
+    @HellIndex(hellColumnOrder = 4,hellRowOrder = 2)
+    private String surname;
+    @HellIndex(hellColumnOrder = 5,hellRowOrder = 80)
+    private String address;
+}
+  ```
+The code above is actually clear enough but I am going to explain it too.
+
+the HellIndex annotation has 2 elements one is hellColumnOrder the other one is hellRowOrder.
+you can put this annotations to ElementType Fields. You do not have to write where to start rows with hellRowOrder the default value of that is 0 
+but you have to write where to start the columns so you should write hellColumnOrder to specify where the columns should start.
+
+# Builder
+  
+  There are 12 builder method in Exhell right now there will be more.
+
+  
+  # List of Methods : 
+
+  
+  **withFileName(String fileName),** 
+  
+  
+   **withBackgroundColorByRowAndCell(Integer hellCell, Integer hellRow, IndexedColors color),**
+  
+  
+  **withBackgroundColorByCell(Integer hellCell, IndexedColors color),**
+  
+  
+  **withFontColorByRowAndCell(Integer hellCell, Integer hellRow, IndexedColors color),**
+  
+  
+  **withFontColorByCell(Integer hellCell, IndexedColors color),**
+  
+  
+  **withBorderColorByRowAndCell(Integer hellCell, Integer hellRow, IndexedColors color),**
+  
+  
+  **withBorderColorByCell(Integer hellCell, IndexedColors color),**
+  
+  
+  **withBoldByRowAndCell(Integer hellCell, Integer hellRow),**
+  
+  
+  **withBoldByCell(Integer hellRow),**
+  
+  
+  **withItalicByRowAndCell(Integer hellCell, Integer hellRow, Boolean isItalic),**
+  
+  
+  **withItalicByCell(Integer hellCell),**
+  
+  
+  **writeToExHell(List<T> objects)**
+
+  
+  if you do not believe me you can count the methods it should be 12 of them 
+
+  I do not explain every method one by one because it's boring and also the method names clear enough but I will explain some of them and make an example with them
+
+  First of all the **withFileNames** method you do not have to use it if you use it the filename will be the String you given + xlsx but if you do not put that method the default fileName is file.xlsx 
+  too creative right ? 
+
+ There are also some style methods like **withBackgroundColorByRowAndCell** and **withBackgroundColorByCell**. If you notice, every style method has both the ByRowAndCell and ByCell variants. With the ByRowAndCell methods, you specify the index where the style will be applied. These methods apply the style to a specific index, affecting only one cell. On the other hand, with the ByCell methods, you can apply the style to the entire column, not just a single element. For example, if you choose column 5, the style will be applied to all the elements in column 5.
+
+
+ # Example
+
+ ``` java
+HellOptions.builder()
+                .withFileName("HellDocExample")
+                .withBackgroundColorByRowAndCell(2,0, IndexedColors.BLUE)
+                .withFontColorByRowAndCell(2,0, IndexedColors.GREEN)
+                .withBorderColorByRowAndCell(2, 0,IndexedColors.RED)
+                .withFontColorByCell(3, IndexedColors.RED)
+                .withBoldByCell(3)
+                .withFontColorByRowAndCell(3,1254,IndexedColors.RED)
+                .withBorderColorByRowAndCell(3, 1254,IndexedColors.BLACK)
+                .withBackgroundColorByRowAndCell(3, 1254, IndexedColors.AQUA)
+                .withItalicByRowAndCell(3, 1254,true)
+                .withBackgroundColorByCell(3, IndexedColors.YELLOW)
+                .withBorderColorByCell(3, IndexedColors.DARK_BLUE)
+                .withFontColorByCell(4, IndexedColors.RED)
+                .writeToExHell(cutServiceList);
+ ```
+
+  
+  
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ferdemoden%2FExhell.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ferdemoden%2FExhell?ref=badge_large)
