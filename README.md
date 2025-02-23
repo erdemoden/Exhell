@@ -10,7 +10,7 @@ Exhell is a library for dto to excel conversion with styles. It just uses apache
 
 Don't wory it was an hell but now it's Exhell.
 
-When you read this small doc you can listen to <a href="https://www.youtube.com/watch?v=lFbnQQ6t98Q" target="_blank">that</a>
+When you read this small doc you can listen to [that](https://www.youtube.com/watch?v=lFbnQQ6t98Q) (it will open in the same window)
 
 
 # Getting Started
