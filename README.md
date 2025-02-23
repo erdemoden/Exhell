@@ -56,7 +56,7 @@ but you have to write where to start the columns so you should write hellColumnO
   There are 12 builder method in Exhell right now there will be more.
 
   
-  # List of Methods : 
+  **List of Methods :** 
 
   
   **withFileName(String fileName),** 
@@ -124,9 +124,42 @@ HellOptions.builder()
                 .withFontColorByCell(4, IndexedColors.RED)
                 .writeToExHell(cutServiceList);
  ```
+I tried above example and you can download it [here](https://docs.google.com/spreadsheets/d/14qdjq4uuvqmOCDUiHcw36f547kr2EBuA/edit?usp=sharing&ouid=100163933498366054655&rtpof=true&sd=true) 
 
-  
-  
+I also explain it with pictures too. I use `CutService` DTO I shared above with same annotations.
+
+
+![Google Drive Resmi](https://drive.google.com/uc?id=1oxzFWY13Uu_Z-V_j7Dg3qAwve57G14zb)
+
+As you can see in the example image above, the columns do not start from index 0 because, in the `CutService` DTO, we define the indexes from 1 to 5.
+
+Additionally, column 3 (which is column D) starts from row 1, not 0, because in the `CutService` DTO, we set `hellRowOrder = 1`.
+
+Column E behaves similarly because in the `CutService` DTO, we define `@HellIndex(hellColumnOrder = 4, hellRowOrder = 2)`.
+
+There is no element in column F because in the `CutService` DTO, we specify `@HellIndex(hellColumnOrder = 5, hellRowOrder = 80)`, meaning we will see elements in row 80 for column 5.
+
+Also, you can see that all the elements in column 4 have a red font color because, using the builder, we wrote:
+```java
+withFontColorByCell(4, IndexedColors.RED)
+```
+![Google Drive Resmi](https://drive.google.com/uc?id=1mcN3jiAQxcQfiqJJPf0LxS9AOTs3YRIu)
+
+As you can see in the picture above, we successfully implemented the styles in column 1254, row 3. In the builder, we declare them 
+
+like this:
+
+ ```java 
+.withFontColorByRowAndCell(3,1254,IndexedColors.RED)
+                .withBorderColorByRowAndCell(3, 1254,IndexedColors.BLACK)
+                .withBackgroundColorByRowAndCell(3, 1254, IndexedColors.AQUA)
+                .withItalicByRowAndCell(3, 1254,true)
+ ```
+
+Additionally, I would like to mention that, since we have reached row 80, we can now see the data in column 5 as well, which is visible in the image
+
+
+So this is Exhell library Enjoy ! 
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ferdemoden%2FExhell.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ferdemoden%2FExhell?ref=badge_large)
