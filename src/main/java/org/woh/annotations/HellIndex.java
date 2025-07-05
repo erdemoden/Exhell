@@ -10,5 +10,7 @@ import java.lang.annotation.Target;
 public @interface HellIndex {
     int hellColumnOrder();
 
-    int hellRowOrder() default 0;
+    int hellRowOrder() default 1;
+
+    String hellColumnName() default "";
 }
